@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OpenWeatherTestApp</string>
+    <string name="API_KEY">fa92ad893663ae1947a4d61a704e6d39</string>
+
+    <string name="GPSAlertDialogTitle">GPS is Enable</string>
+    <string name="GPSAlertDialogMessage">Please enable GPS</string>
+    <string name="action_settings">Settings</string>
+    <string name="cancel">Cancel</string>
+</resources>
