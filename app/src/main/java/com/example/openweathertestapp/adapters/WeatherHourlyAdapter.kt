@@ -15,14 +15,15 @@ import com.example.openweathertestapp.models.WeatherDTO
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WeatherHourlyAdapter(context: Context, mViewHourlyWeather: List<WeatherDTO>) : RecyclerView.Adapter<WeatherHourlyAdapter.ViewHolder>() {
-    private val mViewHourlyWeather: List<WeatherDTO>
-    private val mInflater: LayoutInflater
+class WeatherHourlyAdapter(private val context: Context,
+                           private val mViewHourlyWeather: List<WeatherDTO>)
+    : RecyclerView.Adapter<WeatherHourlyAdapter.ViewHolder>() {
+
     private var mClickListener: ItemClickListener? = null
-    private val mContext: Context
 
     // inflates the row layout from xml when needed
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val mInflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view = mInflater.inflate(R.layout.weather_hourly_item, parent, false)
         return ViewHolder(view)
     }
@@ -32,24 +33,25 @@ class WeatherHourlyAdapter(context: Context, mViewHourlyWeather: List<WeatherDTO
         val weatherDTO = mViewHourlyWeather[position]
         val url = "http://openweathermap.org/img/wn/" + weatherDTO.icon + "@2x.png"
         Log.i("ICON ------>", "ICON ======== $url")
-        Glide.with(mContext)
+        Glide.with(context)
                 .load(url)
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.weatherIcon)
         holder.weatherDegre.text = weatherDTO.temp
-        holder.weatherDay.text = getDateFromUTCTimestamp(java.lang.Long.valueOf(weatherDTO.date), "dd-MM-yyyy - hh:mm a")
+        holder.weatherDay.text = getDateFromUTCTimestamp(weatherDTO.date?.toLong()
+                ?: 0L, "dd-MM-yyyy - hh:mm a")
     }
 
-    fun getDateFromUTCTimestamp(mTimestamp: Long, mDateFormate: String?): String? {
+    private fun getDateFromUTCTimestamp(mTimestamp: Long, mDateFormat: String): String? {
         var date: String? = null
         try {
             val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
             cal.timeInMillis = mTimestamp * 1000L
-            date = DateFormat.format(mDateFormate, cal.timeInMillis).toString()
-            val formatter = SimpleDateFormat(mDateFormate)
+            date = DateFormat.format(mDateFormat, cal.timeInMillis).toString()
+            val formatter = SimpleDateFormat(mDateFormat, Locale.ENGLISH)
             formatter.timeZone = TimeZone.getTimeZone("UTC")
             val value = formatter.parse(date)
-            val dateFormatter = SimpleDateFormat(mDateFormate)
+            val dateFormatter = SimpleDateFormat(mDateFormat, Locale.ENGLISH)
             dateFormatter.timeZone = TimeZone.getDefault()
             date = dateFormatter.format(value)
             return date
@@ -96,10 +98,4 @@ class WeatherHourlyAdapter(context: Context, mViewHourlyWeather: List<WeatherDTO
         fun onItemClick(view: View?, position: Int)
     }
 
-    // data is passed into the constructor
-    init {
-        mInflater = LayoutInflater.from(context)
-        this.mViewHourlyWeather = mViewHourlyWeather
-        mContext = context
-    }
 }

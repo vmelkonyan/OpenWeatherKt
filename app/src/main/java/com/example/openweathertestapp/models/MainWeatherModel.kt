@@ -30,7 +30,7 @@ class MainWeatherModel {
 
     @SerializedName("hourly")
     @Expose
-    private val hourly: List<Hourly>? = null
+    val hourly: List<Hourly>? = null
 
     @SerializedName("daily")
     @Expose

@@ -27,11 +27,10 @@ class SQLiteDatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATAB
             var weatherDTO: WeatherDTO? = null
             if (cursor.moveToFirst()) {
                 do {
-                    weatherDTO = WeatherDTO()
+                    weatherDTO = WeatherDTO(cursor.getString(1),
+                            cursor.getString(2),
+                            cursor.getString(3))
                     weatherDTO.id = cursor.getString(0).toInt()
-                    weatherDTO.date = cursor.getString(1)
-                    weatherDTO.temp = cursor.getString(2)
-                    weatherDTO.icon = cursor.getString(3)
                     weatherDTOList.add(weatherDTO)
                 } while (cursor.moveToNext())
             }

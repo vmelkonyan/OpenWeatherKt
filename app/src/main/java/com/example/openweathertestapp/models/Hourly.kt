@@ -10,41 +10,41 @@ import lombok.Setter
 class Hourly {
     @SerializedName("dt")
     @Expose
-    private val dt: String? = null
+    val dt: String? = null
 
     @SerializedName("temp")
     @Expose
-    private val temp: String? = null
+    val temp: String? = null
 
     @SerializedName("feels_like")
     @Expose
-    private val feelsLike: String? = null
+    val feelsLike: String? = null
 
     @SerializedName("pressure")
     @Expose
-    private val pressure: Int? = null
+    val pressure: Int? = null
 
     @SerializedName("humidity")
     @Expose
-    private val humidity: String? = null
+    val humidity: String? = null
 
     @SerializedName("dew_point")
     @Expose
-    private val dewPoint: String? = null
+    val dewPoint: String? = null
 
     @SerializedName("clouds")
     @Expose
-    private val clouds: String? = null
+    val clouds: String? = null
 
     @SerializedName("wind_speed")
     @Expose
-    private val windSpeed: String? = null
+    val windSpeed: String? = null
 
     @SerializedName("wind_deg")
     @Expose
-    private val windDeg: String? = null
+    val windDeg: String? = null
 
     @SerializedName("weather")
     @Expose
-    private val weather: List<Weather>? = null
+    val weather: List<Weather>? = null
 }

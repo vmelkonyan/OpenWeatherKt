@@ -10,17 +10,17 @@ import lombok.Setter
 class Weather {
     @SerializedName("id")
     @Expose
-    private val id: String? = null
+    val id: String? = null
 
     @SerializedName("main")
     @Expose
-    private val main: String? = null
+    val main: String? = null
 
     @SerializedName("description")
     @Expose
-    private val description: String? = null
+    val description: String? = null
 
     @SerializedName("icon")
     @Expose
-    private val icon: String? = null
+    val icon: String? = null
 }

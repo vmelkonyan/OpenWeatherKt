@@ -1,7 +1,6 @@
 package com.example.openweathertestapp
 
 import android.content.Context
-import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
@@ -13,18 +12,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.openweathertestapp.adapters.WeatherHourlyAdapter
 import com.example.openweathertestapp.models.MainWeatherModel
 import com.example.openweathertestapp.models.WeatherDTO
-import com.example.openweathertestapp.service.RetrofitClientInstance
 import com.example.openweathertestapp.service.RetrofiteAPIInterface
 import com.example.openweathertestapp.service.StorageServiceImpl
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private var retrofiteAPIInterface: RetrofiteAPIInterface? = null
+
     private var adapter: WeatherHourlyAdapter? = null
-    private val storageService: StorageServiceImpl
+    private val storageService by inject<StorageServiceImpl>()
+    private val apiService by inject<RetrofiteAPIInterface>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,15 +36,16 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = horizontalLayoutManager
         if (isNetworkConnected) {
             Toast.makeText(this, "EVERYTHING IS OK", Toast.LENGTH_LONG).show()
-            retrofiteAPIInterface = RetrofitClientInstance.getClient().create(RetrofiteAPIInterface::class.java)
             button.setOnClickListener { v: View? ->
-                val call3 = retrofiteAPIInterface.getCurrentWeather("40.177200", "44.503490", "metric", "dayli", getString(R.string.API_KEY))
+                val call3 = apiService.getCurrentWeather("40.177200", "44.503490", "metric", "dayli", getString(R.string.API_KEY))
                 call3.enqueue(object : Callback<MainWeatherModel?> {
                     override fun onResponse(call: Call<MainWeatherModel?>, response: Response<MainWeatherModel?>) {
                         val userList = response.body()
                         val weatherDTOList: MutableList<WeatherDTO> = ArrayList()
-                        for (hourly in userList.getHourly()) {
-                            weatherDTOList.add(WeatherDTO(hourly.getDt(), hourly.getTemp(), hourly.getWeather().get(0).getIcon()))
+                        userList?.hourly?.let {
+                            for (hourly in it) {
+                                weatherDTOList.add(WeatherDTO(hourly.dt, hourly.temp, hourly.weather?.first()?.icon))
+                            }
                         }
                         storageService.cleareAll()
                         storageService.insertDatabase(weatherDTOList)
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             Toast.makeText(this, "NOT CONNECTION", Toast.LENGTH_LONG).show()
-            if (storageService.allWeather.size > 0) {
+            if (storageService.allWeather.isNotEmpty()) {
                 adapter = WeatherHourlyAdapter(this@MainActivity, storageService.allWeather)
                 recyclerView.adapter = adapter
             } else {
@@ -68,16 +70,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val isNetworkConnected: Boolean
-        private get() {
+        get() {
             val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
+            return cm.activeNetworkInfo?.isConnected ?: false
         }
 
-    companion object {
-        private const val REQUEST_LOCATION = 1
-    }
-
-    init {
-        storageService = StorageServiceImpl(this)
-    }
 }
