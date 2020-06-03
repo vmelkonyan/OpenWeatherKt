@@ -1,5 +1,6 @@
 package com.example.openweathertestapp.service;
 
+
 import com.example.openweathertestapp.models.WeatherDTO;
 
 import java.util.List;

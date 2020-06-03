@@ -47,7 +47,7 @@ class SQLiteDatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATAB
         val values = ContentValues()
         values.put(WEATHER_TABLE_DATE, weatherDTO.date)
         values.put(WEATHER_TABLE_TEMP, weatherDTO.temp)
-        values.put(WEATHER_TABLE_ICON, weatherDTO.icon)
+        values.put(WEATHER_TABLE_ICON, weatherDTO.avatar)
         // insert
         db.insert(WEATHER_TABLE, null, values)
         db.close()

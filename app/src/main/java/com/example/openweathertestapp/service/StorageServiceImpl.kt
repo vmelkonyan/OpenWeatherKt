@@ -1,7 +1,6 @@
 package com.example.openweathertestapp.service
 
 import com.example.openweathertestapp.dao.SQLiteDatabaseHandler
-import com.example.openweathertestapp.models.WeatherDTO
 
 class StorageServiceImpl(private val db: SQLiteDatabaseHandler) : StorageService {
 
