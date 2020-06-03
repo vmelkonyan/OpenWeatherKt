@@ -11,5 +11,5 @@ public interface StorageService {
 
     List<WeatherDTO> getAllWeather();
 
-    void cleareAll();
+    void clearAll();
 }

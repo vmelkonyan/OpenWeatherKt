@@ -1,11 +1,6 @@
 package com.example.openweathertestapp.models
 
 import android.text.format.DateFormat
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.openweathertestapp.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,12 +12,12 @@ class WeatherDTO(var date: String, var temp: String, var avatar: String) {
         val dataFormat = "dd-MM-yyyy - hh:mm a"
         try {
             val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-            cal.timeInMillis = java.lang.Long.valueOf(mTimestamp!!) * 1000L
+            cal.timeInMillis = mTimestamp?.toLong()?.times(1000L) ?: System.currentTimeMillis()
             date = DateFormat.format(dataFormat, cal.timeInMillis).toString()
-            val formatter = SimpleDateFormat(dataFormat)
+            val formatter = SimpleDateFormat(dataFormat, Locale.getDefault())
             formatter.timeZone = TimeZone.getTimeZone("UTC")
             val value = formatter.parse(date)
-            val dateFormatter = SimpleDateFormat(dataFormat)
+            val dateFormatter = SimpleDateFormat(dataFormat, Locale.getDefault())
             dateFormatter.timeZone = TimeZone.getDefault()
             date = dateFormatter.format(value)
             return date
@@ -30,18 +25,6 @@ class WeatherDTO(var date: String, var temp: String, var avatar: String) {
             e.printStackTrace()
         }
         return date
-    }
-
-    companion object {
-        @BindingAdapter("avatar")
-        fun loadImage(imageView: ImageView, imageURL: String?) {
-            Glide.with(imageView.context)
-                    .setDefaultRequestOptions(RequestOptions()
-                            .circleCrop())
-                    .load(imageURL)
-                    .placeholder(R.drawable.loading)
-                    .into(imageView)
-        }
     }
 
 }

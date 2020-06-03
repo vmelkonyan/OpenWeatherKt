@@ -24,7 +24,7 @@ class SQLiteDatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATAB
             val query = "SELECT  * FROM $WEATHER_TABLE"
             val db = this.writableDatabase
             val cursor = db.rawQuery(query, null)
-            var weatherDTO: WeatherDTO? = null
+            var weatherDTO: WeatherDTO?
             if (cursor.moveToFirst()) {
                 do {
                     weatherDTO = WeatherDTO(cursor.getString(1),

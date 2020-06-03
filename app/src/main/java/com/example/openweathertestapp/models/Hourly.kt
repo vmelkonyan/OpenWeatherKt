@@ -6,11 +6,11 @@ import com.google.gson.annotations.SerializedName
 class Hourly {
     @SerializedName("dt")
     @Expose
-    val dt: String? = null
+    val dt: String = ""
 
     @SerializedName("temp")
     @Expose
-    val temp: String? = null
+    val temp: String = ""
 
     @SerializedName("feels_like")
     @Expose

@@ -1,6 +1,7 @@
 package com.example.openweathertestapp.service
 
 import com.example.openweathertestapp.dao.SQLiteDatabaseHandler
+import com.example.openweathertestapp.models.WeatherDTO
 
 class StorageServiceImpl(private val db: SQLiteDatabaseHandler) : StorageService {
 
@@ -14,7 +15,7 @@ class StorageServiceImpl(private val db: SQLiteDatabaseHandler) : StorageService
         return db.allWeather
     }
 
-    override fun cleareAll() {
+    override fun clearAll() {
         db.cleareDb()
     }
 

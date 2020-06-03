@@ -1,9 +1,7 @@
 package com.example.openweathertestapp
 
 import android.app.Application
-import com.example.openweathertestapp.di.apiModule
-import com.example.openweathertestapp.di.appModule
-import com.example.openweathertestapp.di.repoModule
+import com.example.openweathertestapp.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -20,7 +18,7 @@ class OpenWeatherApplication: Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@OpenWeatherApplication)
-            modules(appModule, apiModule, repoModule)
+            modules(apiModule, repoModule, storageModule, viewModel)
         }
     }
 }
